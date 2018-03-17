@@ -7,7 +7,15 @@ var makeHashTable = function()
       _storage: [],
       retrieve: function(key) 
       {
-        return this._storage[hashFn(key, max)];
+        var index = hashFn(key, max);
+        var bucket = this._storage[index];
+        for(var i = 0; i< bucket.length; i++)
+        {
+          if(bucket[i][0] === key)
+          {
+            return bucket[i][1];
+          }
+        }
       },
 
       insert: function(key, value) 
@@ -18,7 +26,7 @@ var makeHashTable = function()
         var bucket;
         if(this._storage[index] !== undefined)
         {
-          bucket = this._storage[index];
+          bucket = retrieve(key);
           var i=0;
           var exist = false; // to check if the key is already exist in the hash table
           while(i < bucket.length && !exist)
